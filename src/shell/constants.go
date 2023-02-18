@@ -10,4 +10,6 @@ const (
 	NU      = "nu"
 	GENERIC = "shell"
 	TCSH    = "tcsh"
+	ELVISH  = "elvish"
+	XONSH   = "xonsh"
 )

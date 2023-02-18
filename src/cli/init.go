@@ -30,6 +30,8 @@ See the documentation to initialize your shell: https://ohmyposh.dev/docs/instal
 			"cmd",
 			"nu",
 			"tcsh",
+			"elvish",
+			"xonsh",
 		},
 		Args: NoArgsOrOneValidArg,
 		Run: func(cmd *cobra.Command, args []string) {
