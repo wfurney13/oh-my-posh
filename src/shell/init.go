@@ -250,6 +250,7 @@ func PrintInit(env platform.Environment) string {
 	default:
 		return fmt.Sprintf("echo \"No initialization script available for %s\"", shell)
 	}
+	notice, canUpgrade := UpgradeAvailable(env)
 	return strings.NewReplacer(
 		"::OMP::", executable,
 		"::CONFIG::", configFile,
@@ -259,6 +260,8 @@ func PrintInit(env platform.Environment) string {
 		"::TOOLTIPS::", toggleSetting(Tooltips),
 		"::RPROMPT::", strconv.FormatBool(RPrompt),
 		"::CURSOR::", strconv.FormatBool(Cursor),
+		"::UPGRADE::", strconv.FormatBool(canUpgrade),
+		"::UPGRADENOTICE::", notice,
 	).Replace(script)
 }
 
