@@ -61,7 +61,8 @@
       "program": "${workspaceRoot}/src",
       "args": [
         "prompt",
-        "debug"
+        "debug",
+        "-p"
       ]
     },
     {
