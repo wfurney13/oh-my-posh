@@ -17,3 +17,4 @@ func (d *DefaultColors) SetAccentColor(env platform.Environment, defaultColor st
 		Background: string(d.ToColor(defaultColor, true, env.Flags().TrueColor)),
 	}
 }
+
