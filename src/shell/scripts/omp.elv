@@ -1,5 +1,6 @@
 set-env POSH_PID (to-string (randint 10000000000000 10000000000000000))
 set-env POSH_THEME '::CONFIG::'
+set-env POSH_SHELL_VERSION $ELVISH_VERSION
 set-env POWERLINE_COMMAND 'oh-my-posh'
 set-env ELVISH_VERSION (elvish --version)
 
