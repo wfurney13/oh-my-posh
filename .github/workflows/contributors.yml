@@ -12,10 +12,11 @@ jobs:
       - name: Checkout code 👋
         uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3
       - name: Check and comment 👩🏾‍💻
-        uses: actions/github-script@98814c53be79b1d30f795b907e553d8679345975
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
         with:
           github-token: ${{ secrets.GH_PAT }}
           script: |
+            const fs = require('fs');
             const { repo: { owner, repo } } = context;
             const pr = context.payload.pull_request;
 
@@ -52,7 +53,20 @@ jobs:
             }
 
             if (contributions.length === 0) {
-              console.log('No relevant additions found');
+              console.log('No relevant contributions found');
+              return;
+            }
+
+            var data = fs.readFileSync('.all-contributorsrc', 'utf8');
+            let json = JSON.parse(data);
+            const contributor = json.contributors.find(contributor => contributor.login === pr.user.login);
+            if (contributor) {
+              console.log(contributor);
+              contributions = contributions.filter(contribution => !contributor.contributions.includes(contribution));
+            }
+
+            if (contributions.length === 0) {
+              console.log('No new contributions found');
               return;
             }
 
