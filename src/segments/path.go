@@ -73,6 +73,8 @@ const (
 	MaxWidth properties.Property = "max_width"
 	// Hides the root location if it doesn't fit in max_depth. Used in Agnoster Short
 	HideRootLocation properties.Property = "hide_root_location"
+	// A foreground color cycle
+	Cycle properties.Property = "cycle"
 )
 
 func (pt *Path) Template() string {
@@ -405,8 +407,32 @@ func (pt *Path) getFullPath() string {
 	if len(pt.root) != 0 && pt.root != pathSeparator && !strings.HasSuffix(pt.root, pathSeparator) {
 		rel = pathSeparator + rel
 	}
-	path := pt.replaceFolderSeparators(rel)
-	return pt.root + path
+
+	cycle := pt.props.GetStringArray(Cycle, []string{})
+	if len(cycle) == 0 {
+		path := pt.replaceFolderSeparators(rel)
+		return pt.root + path
+	}
+
+	colorize := "<%s>%s</>"
+	root := fmt.Sprintf(colorize, cycle[0], pt.root)
+	cycle = append(cycle[1:], cycle[0])
+
+	var colorized []string
+	elements := strings.Split(rel, pathSeparator)
+	for _, element := range elements {
+		if len(element) == 0 {
+			colorized = append(colorized, element)
+			continue
+		}
+		colored := fmt.Sprintf(colorize, cycle[0], element)
+		colorized = append(colorized, colored)
+		cycle = append(cycle[1:], cycle[0])
+	}
+
+	folderSeparator := pt.getFolderSeparator()
+	path := strings.Join(colorized, folderSeparator)
+	return root + path
 }
 
 func (pt *Path) getFolderPath() string {
