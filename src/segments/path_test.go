@@ -1084,7 +1084,7 @@ func TestAgnosterPath(t *testing.T) {
 		},
 	}
 
-	for _, tc := range cases { //nolint:dupl
+	for _, tc := range cases {
 		env := new(mock.MockedEnvironment)
 		env.On("Home").Return(tc.Home)
 		env.On("PathSeparator").Return(tc.PathSeparator)
@@ -1239,7 +1239,7 @@ func TestAgnosterLeftPath(t *testing.T) {
 		},
 	}
 
-	for _, tc := range cases { //nolint:dupl
+	for _, tc := range cases {
 		env := new(mock.MockedEnvironment)
 		env.On("Home").Return(tc.Home)
 		env.On("PathSeparator").Return(tc.PathSeparator)
