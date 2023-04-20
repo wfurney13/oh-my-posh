@@ -956,6 +956,7 @@ func TestAgnosterPath(t *testing.T) {
 		PWD           string
 		GOOS          string
 		PathSeparator string
+		Cycle         []string
 	}{
 		{
 			Case:          "Windows registry drive case sensitive",
@@ -1073,6 +1074,14 @@ func TestAgnosterPath(t *testing.T) {
 			PWD:           "/mnt/folder/location",
 			PathSeparator: "/",
 		},
+		{
+			Case:          "Unix, colorize",
+			Expected:      "<blue>mnt</> > <yellow>f</> > <blue>location</>",
+			Home:          homeDir,
+			PWD:           "/mnt/folder/location",
+			PathSeparator: "/",
+			Cycle:         []string{"blue", "yellow"},
+		},
 	}
 
 	for _, tc := range cases { //nolint:dupl
@@ -1093,6 +1102,7 @@ func TestAgnosterPath(t *testing.T) {
 				FolderSeparatorIcon: " > ",
 				FolderIcon:          "f",
 				HomeIcon:            "~",
+				Cycle:               tc.Cycle,
 			},
 		}
 		path.setPaths()
