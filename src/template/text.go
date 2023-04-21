@@ -3,6 +3,7 @@ package template
 import (
 	"bytes"
 	"errors"
+	"reflect"
 	"strings"
 	"text/template"
 
@@ -14,6 +15,27 @@ const (
 	// Errors to show when the template handling fails
 	InvalidTemplate   = "invalid template text"
 	IncorrectTemplate = "unable to create text based on template"
+)
+
+var (
+	knownVariables = []string{
+		"Root",
+		"PWD",
+		"Folder",
+		"Shell",
+		"ShellVersion",
+		"UserName",
+		"HostName",
+		"Env",
+		"Data",
+		"Code",
+		"OS",
+		"WSL",
+		"Segments",
+		"Templates",
+		"PromptCount",
+		"Var",
+	}
 )
 
 type Text struct {
@@ -73,26 +95,7 @@ func (t *Text) Render() (string, error) {
 }
 
 func (t *Text) cleanTemplate() {
-	knownVariables := []string{
-		"Root",
-		"PWD",
-		"Folder",
-		"Shell",
-		"ShellVersion",
-		"UserName",
-		"HostName",
-		"Env",
-		"Data",
-		"Code",
-		"OS",
-		"WSL",
-		"Segments",
-		"Templates",
-		"PromptCount",
-		"Var",
-	}
-
-	knownVariable := func(variable string) bool {
+	isKnownVariable := func(variable string) bool {
 		variable = strings.TrimPrefix(variable, ".")
 		splitted := strings.Split(variable, ".")
 		if len(splitted) == 0 {
@@ -109,6 +112,29 @@ func (t *Text) cleanTemplate() {
 			}
 		}
 		return false
+	}
+
+	contextHasAttr := func(fieldName string) bool {
+		if t.Context == nil {
+			return false
+		}
+
+		fieldName = strings.TrimPrefix(fieldName, ".")
+		val := reflect.TypeOf(t.Context)
+		switch val.Kind() { //nolint:exhaustive
+		case reflect.Struct:
+			_, ok := val.FieldByName(fieldName)
+			return ok
+		case reflect.Map:
+			m, ok := t.Context.(map[string]interface{})
+			if !ok {
+				return false
+			}
+			_, ok = m[fieldName]
+			return ok
+		default:
+			return false
+		}
 	}
 
 	var result, property string
@@ -149,9 +175,15 @@ func (t *Text) cleanTemplate() {
 				continue
 			}
 			// end of a variable, needs to be appended
-			if !knownVariable(property) {
+			if !isKnownVariable(property) {
 				result += ".Data" + property
 			} else {
+				// check if we have the same property in Data
+				// and replace it with the Data property so it
+				// can take precedence
+				if contextHasAttr(property) {
+					property = ".Data" + property
+				}
 				result += property
 			}
 			property = ""
