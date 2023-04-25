@@ -950,13 +950,14 @@ func TestFolderPathCustomMappedLocations(t *testing.T) {
 
 func TestAgnosterPath(t *testing.T) {
 	cases := []struct {
-		Case          string
-		Expected      string
-		Home          string
-		PWD           string
-		GOOS          string
-		PathSeparator string
-		Cycle         []string
+		Case           string
+		Expected       string
+		Home           string
+		PWD            string
+		GOOS           string
+		PathSeparator  string
+		Cycle          []string
+		ColorSeparator bool
 	}{
 		{
 			Case:          "Windows registry drive case sensitive",
@@ -1082,6 +1083,15 @@ func TestAgnosterPath(t *testing.T) {
 			PathSeparator: "/",
 			Cycle:         []string{"blue", "yellow"},
 		},
+		{
+			Case:           "Unix, colorize with folder separator",
+			Expected:       "<blue>mnt</><yellow> > </><yellow>f</><blue> > </><blue>location</>",
+			Home:           homeDir,
+			PWD:            "/mnt/folder/location",
+			PathSeparator:  "/",
+			Cycle:          []string{"blue", "yellow"},
+			ColorSeparator: true,
+		},
 	}
 
 	for _, tc := range cases {
@@ -1103,6 +1113,7 @@ func TestAgnosterPath(t *testing.T) {
 				FolderIcon:          "f",
 				HomeIcon:            "~",
 				Cycle:               tc.Cycle,
+				ColorSeparator:      tc.ColorSeparator,
 			},
 		}
 		path.setPaths()
