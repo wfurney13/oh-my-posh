@@ -1774,6 +1774,19 @@
                     "title": "Hide the root location",
                     "description": "Hides the root location, when using agnoster_short style, if it doesn't fit in the last max_depth folders.",
                     "default": false
+                  },
+                  "cycle": {
+                    "type": "array",
+                    "title": "Color overrides to use to cycle through and color the path per folder",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "color_separator": {
+                    "type": "boolean",
+                    "title": "Color the folder_separator_icon",
+                    "description": "Color the folder_separator_icon as well when using a cycle.",
+                    "default": false
                   }
                 }
               }
@@ -2771,7 +2784,9 @@
         {
           "if": {
             "properties": {
-              "type": { "const": "unity" }
+              "type": {
+                "const": "unity"
+              }
             }
           },
           "then": {
