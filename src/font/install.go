@@ -6,9 +6,6 @@ import (
 	"archive/zip"
 	"bytes"
 	"io"
-	"path"
-	"runtime"
-	"strings"
 )
 
 func InstallZIP(data []byte) (err error) {
@@ -19,7 +16,7 @@ func InstallZIP(data []byte) (err error) {
 		return
 	}
 
-	fonts := make(map[string]*Font)
+	var fonts []*Font
 
 	for _, zf := range zipReader.File {
 		rc, err := zf.Open()
@@ -38,38 +35,14 @@ func InstallZIP(data []byte) (err error) {
 			continue
 		}
 
-		if _, ok := fonts[fontData.Name]; !ok {
-			fonts[fontData.Name] = fontData
-		} else {
-			// Prefer OTF over TTF; otherwise prefer the first font we found.
-			first := strings.ToLower(path.Ext(fonts[fontData.Name].FileName))
-			second := strings.ToLower(path.Ext(fontData.FileName))
-			if first != second && second == ".otf" {
-				fonts[fontData.Name] = fontData
-			}
-		}
+		fonts = append(fonts, fontData)
 	}
 
 	for _, font := range fonts {
-		if !shouldInstall(font.Name) {
-			continue
-		}
-
-		// print("Installing %s", font.Name)
 		if err = install(font); err != nil {
 			return err
 		}
 	}
 
 	return nil
-}
-
-func shouldInstall(name string) bool {
-	name = strings.ToLower(name)
-	switch runtime.GOOS {
-	case "windows":
-		return strings.Contains(name, "windows compatible")
-	default:
-		return !strings.Contains(name, "windows compatible")
-	}
 }
