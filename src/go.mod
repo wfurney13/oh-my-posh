@@ -13,8 +13,8 @@ require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gookit/color v1.5.3
-	github.com/gookit/config/v2 v2.2.2
-	github.com/gookit/goutil v0.6.9 // indirect
+	github.com/gookit/config/v2 v2.2.3
+	github.com/gookit/goutil v0.6.10 // indirect
 	github.com/huandu/xstrings v1.4.0 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0
@@ -39,7 +39,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.14
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
-	golang.org/x/mod v0.10.0
+	golang.org/x/mod v0.11.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -88,8 +88,8 @@ require (
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/yusufpapurcu/wmi v1.2.3 // indirect
 	github.com/zclconf/go-cty v1.13.1 // indirect
-	golang.org/x/sync v0.2.0 // indirect
-	golang.org/x/term v0.8.0 // indirect
+	golang.org/x/sync v0.3.0 // indirect
+	golang.org/x/term v0.9.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 )
 
