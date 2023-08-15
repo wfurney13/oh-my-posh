@@ -12,7 +12,7 @@
         },
         {
           "style": "plain",
-          "template": "{{ .UserName }}",
+          "template": "{{ .UserName }} ",
           "type": "session"
         },
         {
