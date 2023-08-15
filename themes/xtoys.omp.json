@@ -12,7 +12,7 @@
         },
         {
           "style": "plain",
-          "template": "{{ .UserName }}@{{ .HostName }} ",
+          "template": "{{ .UserName }}",
           "type": "session"
         },
         {
