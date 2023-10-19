@@ -12,7 +12,7 @@
         },
         {
           "style": "plain",
-          "template": "",
+          "template": "{} ",
           "type": "session"
         },
         {
